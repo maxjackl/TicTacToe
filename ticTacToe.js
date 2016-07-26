@@ -79,6 +79,12 @@ var INTLOGIC = (function() {
 					checkWinningCondition('O');
 				}
 			}
+		},
+		reset : function() {
+			arrayX = [];
+			arrayO = [];
+			turn = 'X';
+			playerWon = false;
 		}
 	}
 
@@ -90,6 +96,12 @@ var SCREEN = (function() {
 	return {
 		drawScreen : function(place, player) {
 			document.getElementById(place).innerHTML = player;
+		},
+		reset : function() {
+			for (i=1; i <= 9; i++) {
+				document.getElementById(i).innerHTML = '_';
+			}
+
 		}
 
 	}
