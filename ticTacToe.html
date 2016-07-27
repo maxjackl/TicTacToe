@@ -9,12 +9,11 @@ body {
     background-color: linen;
     text-align:center;
     font-size: 46pt;
-    margin-top: 6cm;
+    margin-top: 4cm;
     font-family: monospace;
 }
- {
-    color: maroon;
-    margin-left: 40px;
+.small {
+  font-size: 12pt;
 }
 </style>
   </head>
@@ -55,9 +54,13 @@ body {
       </tr>
     </table>
 <br>
-<br>
-<button onClick="INTLOGIC.reset(); SCREEN.reset();">
+<button onClick="BOARD.reset();">
 Reset Game</button>
+
+<form class="small">
+ <input type="radio" name="game" value="2player" checked onchange="BOARD.setgameplayer()"> 2 players<br>
+ <input type="radio" name="game" value="vsAI" onchange="BOARD.setgameAI()"> vs Compluter<br>
+</form>
 
 <br><br>
 <!-- <input type='button' onclick='changeText()' value='Change Text'/>
