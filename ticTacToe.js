@@ -3,9 +3,7 @@ var INTLOGIC = (function() {
 	var arrayO = [];
 	var turn = 'X';
 	var playerWon = false;
-
-
-
+	var turnCount = 0;
 
 		function checkWinningCondition(player) {
 			var winningArray = [
@@ -22,7 +20,7 @@ var INTLOGIC = (function() {
 			for (var i=0, l=winningArray.length; i<l; i++) {
 				var currentArray = winningArray[i];
 				var elementsContained = 0;
-				console.log(currentArray);
+				//console.log(currentArray);
 				var checkedArray;
 
 				for (var k=0, m=currentArray.length; k<m; k++) {
@@ -34,14 +32,14 @@ var INTLOGIC = (function() {
 					}
 
 						//console.log(currentArray[k]);
-						console.log("ArrayX: " + arrayX);
+						//console.log("ArrayX: " + arrayX);
 
 						if (checkedArray.indexOf(currentArray[k]) > -1) {
 
-							console.log("element containment: " + checkedArray.indexOf(currentArray[k]));
+							//console.log("element containment: " + checkedArray.indexOf(currentArray[k]));
 							elementsContained++;
 						}
-						console.log("contained elements: " +elementsContained);
+						//console.log("contained elements: " +elementsContained);
 						if (elementsContained === 3) {
 							alert(player + " won!")
 							playerWon = true;
@@ -55,7 +53,7 @@ var INTLOGIC = (function() {
 		}
 
 		function checkEmpty(place) {
-			if (arrayO.indexOf(place) == -1 && arrayO.indexOf(place) == -1) {
+			if (arrayX.indexOf(place) == -1 && arrayO.indexOf(place) == -1) {
 				return true;
 			}
 			else {
@@ -63,14 +61,17 @@ var INTLOGIC = (function() {
 			}
 		}
 
-	return {
-		check : function(place){
+		function check(place){
 			if (checkEmpty(place) && !playerWon) {
 				if (turn === 'X') {
 					arrayX.push(place)
 					SCREEN.drawScreen(place, 'X');
 					checkWinningCondition('X');
 					turn = 'O';
+					if (BOARD.checkGameAI) {
+						console.log("Computer controlls O");
+						AI.makeMove();
+					}
 				}
 				else {
 					arrayO.push(place)
@@ -78,14 +79,32 @@ var INTLOGIC = (function() {
 					turn = 'X';
 					checkWinningCondition('O');
 				}
+				turnCount ++;
+				console.log("It's " + turnCount + " turn.")
 			}
-		},
-		reset : function() {
+		}
+
+		function reset() {
 			arrayX = [];
 			arrayO = [];
 			turn = 'X';
 			playerWon = false;
+			turnCount = 0;
 		}
+		function returnTurnCount() {
+			return turnCount;
+		}
+
+		function returnArrayX() {
+			return arrayX;
+		}
+
+
+	return {
+		check : check,
+		reset : reset,
+		returnTurnCount : returnTurnCount,
+		returnArrayX : returnArrayX
 	}
 
 })();
@@ -130,16 +149,39 @@ var BOARD = (function() {
 
 	};
 
+	function checkGameAI() {
+		if (gameAI) return true;
+	}
+
+
+
 	return {
-		
 		reset : reset,
 		setgameAI : setgameAI,
-		setgameplayer : setgameplayer
+		setgameplayer : setgameplayer,
+		checkGameAI : checkGameAI
 
 	}
 })();
 
+var AI = function() {
 
+	function makeMove() {
+		console.log("Time to make a move");
+
+		console.log(INTLOGIC.returnTurnCount() + INTLOGIC.returnArrayX())
+		if (INTLOGIC.returnTurnCount() === 0 && JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5])) {
+
+			INTLOGIC.check(1);
+console.log("Time to make a specific move");
+		}
+	}
+
+	return {
+		makeMove : makeMove
+	}
+
+}();
 
 
 
