@@ -201,8 +201,12 @@ var AI = function() {
 
 	function makeMove() {
 
-		if (INTLOGIC.returnTurnCountO() > 2) {
+		if (INTLOGIC.returnTurnCountO() >= 2) {
 			checkWinNextMove(INTLOGIC.returnArrayO());
+		}
+
+		if (INTLOGIC.returnTurnCountX() >= 2) {
+			checkLoseNextMove(INTLOGIC.returnArrayX());
 		}
 
 
@@ -224,6 +228,23 @@ console.log("Time to make a specific move");
 				arrayTemp.push(i);
 				console.log(arrayTemp);
 				console.log(playerArray);
+				console.log(INTLOGIC.checkWinningCondition('X', arrayTemp));
+				if (INTLOGIC.checkWinningCondition('X', arrayTemp)) {
+					INTLOGIC.check(i);
+				}
+			}
+
+		}
+	}
+
+	function checkLoseNextMove(playerArray) {
+		var arrayTemp;
+		for (var i = 1; i <= 9; i++) {
+			arrayTemp = playerArray.slice(0);
+			if (INTLOGIC.checkEmpty(i)) {
+				arrayTemp.push(i);
+				console.log(arrayTemp);
+				console.log(playerArray);
 				console.log(INTLOGIC.checkWinningCondition('O', arrayTemp));
 				if (INTLOGIC.checkWinningCondition('O', arrayTemp)) {
 					INTLOGIC.check(i);
@@ -231,10 +252,6 @@ console.log("Time to make a specific move");
 			}
 
 		}
-		/*
-		for(every possible move)  //iterate through digits from 1 to 9
-		check whether possible move
-		if added would O winn INTLOGIC.checkWinningCondition */
 	}
 
 
