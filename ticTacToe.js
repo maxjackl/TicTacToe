@@ -3,7 +3,8 @@ var INTLOGIC = (function() {
 	var arrayO = [];
 	var turn = 'X';
 	var playerWon = false;
-	var turnCount = 0;
+	var turnCountX = 0;
+	var turnCountO = 0;
 
 		function checkWinningCondition(player, playerArray) {
 			var winningArray = [
@@ -70,6 +71,7 @@ var INTLOGIC = (function() {
 				if (turn === 'X') {
 					arrayX.push(place)
 					SCREEN.drawScreen(place, 'X');
+					turnCountX ++;
 
 					if (checkWinningCondition('X', arrayX)) {
 						alert(turn + " won!");
@@ -86,6 +88,7 @@ var INTLOGIC = (function() {
 				else {
 					arrayO.push(place)
 					SCREEN.drawScreen(place, 'O');
+					turnCountO ++;
 
 					if (checkWinningCondition('O', arrayO)) {
 						alert(turn + " won!");
@@ -94,8 +97,8 @@ var INTLOGIC = (function() {
 
 					turn = 'X';
 				}
-				turnCount ++;
-				console.log("It's " + turnCount + " turn.")
+
+				console.log("It's " + turnCountX + turnCountO + " turn.")
 			}
 		}
 
@@ -104,11 +107,17 @@ var INTLOGIC = (function() {
 			arrayO = [];
 			turn = 'X';
 			playerWon = false;
-			turnCount = 0;
+			turnCountX = 0;
+			turnCountO = 0;
 		}
-		function returnTurnCount() {
-			return turnCount;
+		function returnTurnCountO() {
+			return turnCountO;
 		}
+
+		function returnTurnCountX() {
+			return turnCountX;
+		}
+
 
 		function returnArrayX() {
 			return arrayX;
@@ -122,7 +131,8 @@ var INTLOGIC = (function() {
 	return {
 		check : check,
 		reset : reset,
-		returnTurnCount : returnTurnCount,
+		returnTurnCountX : returnTurnCountX,
+		returnTurnCountO : returnTurnCountO,
 		returnArrayX : returnArrayX,
 		returnArrayO : returnArrayO,
 		checkEmpty : checkEmpty,
@@ -188,13 +198,18 @@ var BOARD = (function() {
 
 var AI = function() {
 
+
 	function makeMove() {
-		checkWinNextMove(INTLOGIC.returnArrayO());
+
+		if (INTLOGIC.returnTurnCountO() > 2) {
+			checkWinNextMove(INTLOGIC.returnArrayO());
+		}
+
 
 		console.log("Time to make a move");
 
-		console.log(INTLOGIC.returnTurnCount() + INTLOGIC.returnArrayX())
-		if (INTLOGIC.returnTurnCount() === 0 && JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5])) {
+		console.log(INTLOGIC.returnTurnCountO() + INTLOGIC.returnArrayX())
+		if (INTLOGIC.returnTurnCountO() === 0 && JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5])) {
 
 			INTLOGIC.check(1);
 console.log("Time to make a specific move");
