@@ -68,7 +68,7 @@ var INTLOGIC = (function() {
 					SCREEN.drawScreen(place, 'X');
 					checkWinningCondition('X');
 					turn = 'O';
-					if (BOARD.checkGameAI) {
+					if (BOARD.checkGameAI()) {
 						console.log("Computer controlls O");
 						AI.makeMove();
 					}
@@ -136,21 +136,21 @@ var BOARD = (function() {
 	};
 	function setgameAI() {
 
-		gameAI : true;
+		gameAI = true;
 		console.log('game against AI');
 		reset();
 
 	};
 	function setgameplayer() {
 
-		gameAI : false;
+		gameAI = false;
 		console.log('game against player');
 		reset();
 
 	};
 
 	function checkGameAI() {
-		if (gameAI) return true;
+		return gameAI;
 	}
 
 

@@ -58,8 +58,8 @@ body {
 Reset Game</button>
 
 <form class="small">
- <input type="radio" name="game" value="2player" checked onchange="BOARD.setgameplayer()"> 2 players<br>
- <input type="radio" name="game" value="vsAI" onchange="BOARD.setgameAI()"> vs Compluter<br>
+ <input type="radio" name="game" value="2player" checked onchange="BOARD.setgameplayer();console.log(BOARD.checkGameAI())"> 2 players<br>
+ <input type="radio" name="game" value="vsAI" onchange="BOARD.setgameAI();console.log(BOARD.checkGameAI())"> vs Compluter<br>
 </form>
 
 <br><br>
