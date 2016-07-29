@@ -5,7 +5,7 @@ var INTLOGIC = (function() {
 	var playerWon = false;
 	var turnCount = 0;
 
-		function checkWinningCondition(player) {
+		function checkWinningCondition(player, playerArray) {
 			var winningArray = [
 				[1,2,3],
 				[4,5,6],
@@ -21,16 +21,17 @@ var INTLOGIC = (function() {
 				var currentArray = winningArray[i];
 				var elementsContained = 0;
 				//console.log(currentArray);
-				var checkedArray;
+				var checkedArray = playerArray;
 
 				for (var k=0, m=currentArray.length; k<m; k++) {
 
+/*
 					if (player === 'X') {
 						checkedArray = arrayX;
 					} else {
 						checkedArray = arrayO;
 					}
-
+*/
 						//console.log(currentArray[k]);
 						//console.log("ArrayX: " + arrayX);
 
@@ -40,16 +41,19 @@ var INTLOGIC = (function() {
 							elementsContained++;
 						}
 						//console.log("contained elements: " +elementsContained);
+						console.log(elementsContained);
 						if (elementsContained === 3) {
-							alert(player + " won!")
-							playerWon = true;
+
+							return true;
 						}
+
 
 
 				}
 
 
 			}
+			return false;
 		}
 
 		function checkEmpty(place) {
@@ -66,7 +70,13 @@ var INTLOGIC = (function() {
 				if (turn === 'X') {
 					arrayX.push(place)
 					SCREEN.drawScreen(place, 'X');
-					checkWinningCondition('X');
+
+					if (checkWinningCondition('X', arrayX)) {
+						alert(turn + " won!");
+						playerWon = true;
+					}
+
+
 					turn = 'O';
 					if (BOARD.checkGameAI()) {
 						console.log("Computer controlls O");
@@ -76,8 +86,13 @@ var INTLOGIC = (function() {
 				else {
 					arrayO.push(place)
 					SCREEN.drawScreen(place, 'O');
+
+					if (checkWinningCondition('O', arrayO)) {
+						alert(turn + " won!");
+						playerWon = true;
+					}
+
 					turn = 'X';
-					checkWinningCondition('O');
 				}
 				turnCount ++;
 				console.log("It's " + turnCount + " turn.")
@@ -99,12 +114,19 @@ var INTLOGIC = (function() {
 			return arrayX;
 		}
 
+		function returnArrayO() {
+			return arrayO;
+		}
+
 
 	return {
 		check : check,
 		reset : reset,
 		returnTurnCount : returnTurnCount,
-		returnArrayX : returnArrayX
+		returnArrayX : returnArrayX,
+		returnArrayO : returnArrayO,
+		checkEmpty : checkEmpty,
+		checkWinningCondition : checkWinningCondition
 	}
 
 })();
@@ -167,6 +189,8 @@ var BOARD = (function() {
 var AI = function() {
 
 	function makeMove() {
+		checkWinNextMove(INTLOGIC.returnArrayO());
+
 		console.log("Time to make a move");
 
 		console.log(INTLOGIC.returnTurnCount() + INTLOGIC.returnArrayX())
@@ -176,6 +200,28 @@ var AI = function() {
 console.log("Time to make a specific move");
 		}
 	}
+
+	function checkWinNextMove(playerArray) {
+		var arrayTemp;
+		for (var i = 1; i <= 9; i++) {
+			arrayTemp = playerArray.slice(0);
+			if (INTLOGIC.checkEmpty(i)) {
+				arrayTemp.push(i);
+				console.log(arrayTemp);
+				console.log(playerArray);
+				console.log(INTLOGIC.checkWinningCondition('O', arrayTemp));
+				if (INTLOGIC.checkWinningCondition('O', arrayTemp)) {
+					INTLOGIC.check(i);
+				}
+			}
+
+		}
+		/*
+		for(every possible move)  //iterate through digits from 1 to 9
+		check whether possible move
+		if added would O winn INTLOGIC.checkWinningCondition */
+	}
+
 
 	return {
 		makeMove : makeMove
