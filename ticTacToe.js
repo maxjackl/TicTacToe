@@ -213,12 +213,24 @@ var AI = function() {
 		console.log("Time to make a move");
 
 		console.log(INTLOGIC.returnTurnCountO() + INTLOGIC.returnArrayX())
-		if (INTLOGIC.returnTurnCountO() === 0 && JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5])) {
+
+		//If X makes the first move in the middle
+		if (INTLOGIC.returnTurnCountO() === 0
+				&& JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5])) {
+
+
 
 			INTLOGIC.check(1);
 console.log("Time to make a specific move");
 		}
+
+		//If X makes the second move in the 9th position
+		if (INTLOGIC.returnTurnCountO() === 1
+				&& JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5, 9])) {
+					INTLOGIC.check(7);
 	}
+
+}
 
 	function checkWinNextMove(playerArray) {
 		var arrayTemp;
