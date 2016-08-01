@@ -5,6 +5,7 @@ var INTLOGIC = (function() {
 	var playerWon = false;
 	var turnCountX = 0;
 	var turnCountO = 0;
+	var draw = false;
 
 		function checkWinningCondition(player, playerArray) {
 			var winningArray = [
@@ -66,8 +67,20 @@ var INTLOGIC = (function() {
 			}
 		}
 
+		function checkDraw() {
+			if(turnCountX + turnCountO >= 9 && !playerWon) {
+				draw = true;
+				return true;
+			}
+			else {
+				draw = false;
+				return false;
+			}
+		}
+
 		function check(place){
-			if (checkEmpty(place) && !playerWon) {
+
+			if ((checkEmpty(place) && !playerWon) && !draw) {
 				if (turn === 'X') {
 					arrayX.push(place)
 					SCREEN.drawScreen(place, 'X');
@@ -76,14 +89,17 @@ var INTLOGIC = (function() {
 					if (checkWinningCondition('X', arrayX)) {
 						alert(turn + " won!");
 						playerWon = true;
+					} else if (checkDraw()) {
+						alert("It's a draw.")
+					}	else {
+						turn = 'O';
+						if (BOARD.checkGameAI()) {
+							console.log("Computer controlls O");
+							AI.makeMove();
+						}
 					}
 
 
-					turn = 'O';
-					if (BOARD.checkGameAI()) {
-						console.log("Computer controlls O");
-						AI.makeMove();
-					}
 				}
 				else {
 					arrayO.push(place)
@@ -100,6 +116,9 @@ var INTLOGIC = (function() {
 
 				console.log("It's " + turnCountX + turnCountO + " turn.")
 			}
+
+
+
 		}
 
 		function reset() {
@@ -109,6 +128,7 @@ var INTLOGIC = (function() {
 			playerWon = false;
 			turnCountX = 0;
 			turnCountO = 0;
+			draw = false;
 		}
 		function returnTurnCountO() {
 			return turnCountO;
@@ -207,9 +227,10 @@ var BOARD = (function() {
 })();
 
 var AI = function() {
-
+	var moved;
 
 	function makeMove() {
+		moved = false;
 
 		//If X makes the first move in the middle
 		if (INTLOGIC.returnTurnCountO() === 0
@@ -217,23 +238,25 @@ var AI = function() {
 
 			INTLOGIC.check(1);
 			console.log("Time to move to the 1 position");
-			return;
+
+			moved = true;
+
 		}
 
 		//If X makes the second move in the 9th position
-		else if (INTLOGIC.returnTurnCountO() === 1
+		else if (moved === false && INTLOGIC.returnTurnCountO() === 1
 				&& JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5, 9])) {
 					INTLOGIC.check(7);
 					console.log("checking for the X move to 5 and 9");
-					return;
+					moved = true;
 		}
 
-		if (INTLOGIC.returnTurnCountO() >= 2) {
+		if (moved === false && INTLOGIC.returnTurnCountO() >= 2) {
 			checkWinNextMove(INTLOGIC.returnArrayO());
 			console.log("checking for the winning move");
 		}
 
-		if (INTLOGIC.returnTurnCountX() >= 2) {
+		if (moved === false && INTLOGIC.returnTurnCountX() >= 2) {
 			checkLoseNextMove(INTLOGIC.returnArrayX());
 			console.log("checking for the loosing move");
 		}
@@ -245,15 +268,10 @@ var AI = function() {
 
 
 
-
-		console.log('checking for a random number');
-		makeRandomMove();
-
-
-
-
-
-
+		if (!moved) {
+			console.log('checking for a random number');
+			makeRandomMove();
+		}
 
 }
 
@@ -268,6 +286,7 @@ var AI = function() {
 				console.log(INTLOGIC.checkWinningCondition('X', arrayTemp));
 				if (INTLOGIC.checkWinningCondition('X', arrayTemp)) {
 					INTLOGIC.check(i);
+					moved = true;
 				}
 			}
 
@@ -285,6 +304,7 @@ var AI = function() {
 				console.log(INTLOGIC.checkWinningCondition('O', arrayTemp));
 				if (INTLOGIC.checkWinningCondition('O', arrayTemp)) {
 					INTLOGIC.check(i);
+					moved = true;
 				}
 			}
 
@@ -305,16 +325,18 @@ var AI = function() {
 
 		console.log("making a randoom move");
 		var randomMoveTemp = randomPosition();
-		while (!INTLOGIC.checkEmpty(randomMoveTemp) || !INTLOGIC.returnPlayerWon()) {
+
+		while (!INTLOGIC.checkEmpty(randomMoveTemp)) {
 			console.log(randomMoveTemp);
 			randomMoveTemp = randomPosition();
 			console.log(randomMoveTemp);
+			alert(randomMoveTemp);
 		}
 
-		if (INTLOGIC.returnTurn === '0') {
-			INTLOGIC.check(randomMoveTemp);
-			return;
-		}
+
+
+		INTLOGIC.check(randomMoveTemp);
+		moved = true;
 
 	}
 
