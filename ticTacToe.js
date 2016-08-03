@@ -83,7 +83,7 @@ var INTLOGIC = (function() {
 			if ((checkEmpty(place) && !playerWon) && !draw) {
 				if (turn === 'X') {
 					arrayX.push(place)
-					SCREEN.drawScreen(place, 'X');
+					SCREEN.drawScreen(place, '<span class="x">X</span>');
 					turnCountX ++;
 
 					if (checkWinningCondition('X', arrayX)) {
@@ -103,7 +103,7 @@ var INTLOGIC = (function() {
 				}
 				else {
 					arrayO.push(place)
-					SCREEN.drawScreen(place, 'O');
+					SCREEN.drawScreen(place, '<span class="o">O</span>');
 					turnCountO ++;
 
 					if (checkWinningCondition('O', arrayO)) {
@@ -178,7 +178,7 @@ var SCREEN = (function() {
 		},
 		reset : function() {
 			for (i=1; i <= 9; i++) {
-				document.getElementById(i).innerHTML = '_';
+				document.getElementById(i).innerHTML = '&nbsp';
 			}
 
 		}
