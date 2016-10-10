@@ -48,12 +48,7 @@ var INTLOGIC = (function() {
 
 							return true;
 						}
-
-
-
 				}
-
-
 			}
 			return false;
 		}
@@ -87,7 +82,7 @@ var INTLOGIC = (function() {
 					turnCountX ++;
 
 					if (checkWinningCondition('X', arrayX)) {
-						alert(turn + " won!");
+						document.getElementById("winning").innerHTML = turn + " won!<br>";
 						playerWon = true;
 					} else if (checkDraw()) {
 						alert("It's a draw.")
@@ -110,7 +105,6 @@ var INTLOGIC = (function() {
 						alert(turn + " won!");
 						playerWon = true;
 					}
-
 					turn = 'X';
 				}
 
@@ -177,6 +171,7 @@ var SCREEN = (function() {
 			document.getElementById(place).innerHTML = player;
 		},
 		reset : function() {
+			document.getElementById("winning").innerHTML = "";
 			for (i=1; i <= 9; i++) {
 				document.getElementById(i).innerHTML = '&nbsp';
 			}
