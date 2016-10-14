@@ -238,6 +238,17 @@ var AI = function() {
 
 		}
 
+		//If X makes the first move Not in the middle
+		if (INTLOGIC.returnTurnCountO() === 0
+				&& JSON.stringify(INTLOGIC.returnArrayX()) !== JSON.stringify([5])) {
+
+			INTLOGIC.check(5);
+			console.log("Time to move to the 1 position");
+
+			moved = true;
+
+		}
+
 		//If X makes the second move in the 9th position
 		else if (moved === false && INTLOGIC.returnTurnCountO() === 1
 				&& JSON.stringify(INTLOGIC.returnArrayX()) === JSON.stringify([5, 9])) {
