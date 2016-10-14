@@ -85,7 +85,7 @@ var INTLOGIC = (function() {
 						playerWon = true;
 						SCREEN.displayWinner(turn);
 					} else if (checkDraw()) {
-						alert("It's a draw.")
+						SCREEN.displayWinner("draw");
 					}	else {
 						turn = 'O';
 						if (BOARD.checkGameAI()) {
@@ -179,7 +179,12 @@ var SCREEN = (function() {
 	};
 
 	function displayWinner(winner) {
-		document.getElementById("winning").innerHTML = winner + " won!<br>";
+		if (winner === "draw") {
+			document.getElementById("winning").innerHTML = "It's a draw!<br>";
+		} else {
+			document.getElementById("winning").innerHTML = winner + " won!<br>";
+		}
+
 	}
 
 
@@ -346,7 +351,6 @@ var AI = function() {
 			console.log(randomMoveTemp);
 			randomMoveTemp = randomPosition();
 			console.log(randomMoveTemp);
-			alert(randomMoveTemp);
 		}
 
 
@@ -372,7 +376,6 @@ for (var i=0; i < winningArray.length; i++) {
 	if (JSON.stringify(arrayX.sort()) == JSON.stringify(winningArray[i])) {
 		console.log(JSON.stringify(arrayX));
 		console.log(JSON.stringify(winningArray[i]));
-		alert("game over. X won");
 		return true;
 	}
 
