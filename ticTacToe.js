@@ -82,8 +82,8 @@ var INTLOGIC = (function() {
 					turnCountX ++;
 
 					if (checkWinningCondition('X', arrayX)) {
-						document.getElementById("winning").innerHTML = turn + " won!<br>";
 						playerWon = true;
+						SCREEN.displayWinner(turn);
 					} else if (checkDraw()) {
 						alert("It's a draw.")
 					}	else {
@@ -102,8 +102,8 @@ var INTLOGIC = (function() {
 					turnCountO ++;
 
 					if (checkWinningCondition('O', arrayO)) {
-						alert(turn + " won!");
 						playerWon = true;
+						SCREEN.displayWinner(turn);
 					}
 					turn = 'X';
 				}
@@ -166,17 +166,27 @@ var INTLOGIC = (function() {
 })();
 
 var SCREEN = (function() {
-	return {
-		drawScreen : function(place, player) {
-			document.getElementById(place).innerHTML = player;
-		},
-		reset : function() {
-			document.getElementById("winning").innerHTML = "";
-			for (i=1; i <= 9; i++) {
-				document.getElementById(i).innerHTML = '&nbsp';
-			}
 
-		}
+	function drawScreen(place, player) {
+		document.getElementById(place).innerHTML = player;
+	};
+	function reset() {
+		document.getElementById("winning").innerHTML = "";
+		for (i=1; i <= 9; i++) {
+			document.getElementById(i).innerHTML = '&nbsp';
+		};
+
+	};
+
+	function displayWinner(winner) {
+		document.getElementById("winning").innerHTML = winner + " won!<br>";
+	}
+
+
+	return {
+		drawScreen : drawScreen,
+		reset : reset,
+		displayWinner : displayWinner,
 
 	}
 
